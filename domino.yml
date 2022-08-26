@@ -1,0 +1,264 @@
+schema: '1.0'
+name: domino-deployment
+version: 5.2.1
+hostname: 'domino-cluster-latest'
+pod_cidr: '192.168.0.0/16'
+ssl_enabled: true
+ssl_redirect: true
+request_resources: true
+enable_network_policies: true
+enable_pod_security_policies: true
+global_node_selectors: {}
+create_restricted_pod_security_policy: true
+kubernetes_distribution: cncf
+istio:
+  enabled: false
+  install: false
+  cni: true
+  nginx_annotations: true
+namespaces:
+  platform:
+    name: domino-platform
+    annotations: {}
+    labels:
+      domino-platform: 'true'
+  compute:
+    name: domino-compute
+    annotations: {}
+    labels:
+      domino-compute: 'true'
+  system:
+    name: domino-system
+    annotations: {}
+    labels: {}
+  istio:
+    name: istio-system
+    annotations: {}
+    labels: {}
+ingress_controller:
+  create: true
+  gke_cluster_uuid: ''
+  class_name: nginx
+storage_classes:
+  block:
+    create: true
+    name: dominodisk
+    type: ebs
+    access_modes:
+    - ReadWriteOnce
+    base_path: ''
+    default: false
+    parameters: {}
+  shared:
+    create: true
+    name: dominoshared
+    type: nfs
+    access_modes:
+    - ReadWriteMany
+    volume_capacity: 5Ti
+    efs:
+      region: ''
+      filesystem_id: ''
+    nfs:
+      server: ''
+      mount_path: ''
+      mount_options: []
+    azure_file:
+      storage_account: ''
+blob_storage:
+  projects:
+    type: s3
+    s3:
+      region: 'us-west-2' # EKS region
+      bucket: 'dominodata-user-data-bucket' #user data bucket
+      sse_kms_key_id: ''
+      access_key_id: ''
+      secret_access_key: ''
+    azure:
+      account_name: ''
+      account_key: ''
+      container: ''
+    gcs:
+      bucket: ''
+      service_account_name: ''
+      project_name: ''
+  logs:
+    type: s3
+    s3:
+      region: 'us-west-2'
+      bucket: 'dominodata-fsxontap-logs-bucket'
+      sse_kms_key_id: ''
+      access_key_id: ''
+      secret_access_key: ''
+    azure:
+      account_name: ''
+      account_key: ''
+      container: ''
+    gcs:
+      bucket: ''
+      service_account_name: ''
+      project_name: ''
+  backups:
+    type: s3
+    s3:
+      region: 'us-west-2'
+      bucket: 'dominodata-backups-bucket'
+      sse_kms_key_id: ''
+      access_key_id: ''
+      secret_access_key: ''
+    azure:
+      account_name: ''
+      account_key: ''
+      container: ''
+    gcs:
+      bucket: ''
+      service_account_name: ''
+      project_name: ''
+  default:
+    type: s3
+    s3:
+      region: 'us-west-2'
+      bucket: 'dominodata-registry-bucket'
+      sse_kms_key_id: ''
+      access_key_id: ''
+      secret_access_key: ''
+    azure:
+      account_name: ''
+      account_key: ''
+      container: ''
+    gcs:
+      bucket: ''
+      service_account_name: ''
+      project_name: ''
+    enabled: false
+autoscaler:
+  enabled: true
+  cloud_provider: aws
+  auto_discovery:
+    cluster_name: 'domino-cluster-latest'
+    tags: []
+  groups: []
+  aws:
+    region: 'us-west-2'
+  azure:
+    resource_group: ''
+    subscription_id: ''
+spotinst_controller:
+  enabled: false
+  token: ''
+  account: ''
+metrics_server:
+  install: true
+external_dns:
+  enabled: false
+  provider: aws
+  domain_filters: []
+  zone_id_filters: []
+  txt_owner_id: ''
+git:
+  storage_class: dominodisk
+email_notifications:
+  enabled: false
+  server: smtp.customer.org
+  port: 465
+  encryption: ssl
+  from_address: domino@customer.org
+  authentication:
+    username: ''
+    password: ''
+monitoring:
+  prometheus_metrics: true
+  newrelic:
+    apm: false
+    infrastructure: false
+    license_key: ''
+helm:
+  host: ''
+  namespace: ''
+  insecure: false
+  username: ''
+  password: ''
+  version: 3
+  skip_daemonset_validation: false
+  tiller_image: ''
+  prefix: ''
+  cache_path: '/app/charts'
+private_docker_registry:
+  server: quay.io
+  username: 'domino+netapp_fsx'
+  password: 'DC675XRVV3RRK5D71LFCAD83E25T3ZXX16OCASH70MH604N2NCES0A85IS88R9QF'
+internal_docker_registry:
+  enabled: true
+  s3_override:
+    region: ''
+    bucket: ''
+    sse_kms_key_id: ''
+    access_key_id: ''
+    secret_access_key: ''
+  gcs_override:
+    bucket: ''
+    service_account_name: ''
+    project_name: ''
+  azure_blobs_override:
+    account_name: ''
+    account_key: ''
+    container: ''
+  allowed_cidrs:
+  - 0.0.0.0/0
+external_docker_registry: null
+telemetry:
+  intercom:
+    enabled: false
+  mixpanel:
+    enabled: false
+    token: ''
+gpu:
+  enabled: false
+fleetcommand:
+  enabled: false
+  api_token: ''
+certificate_management:
+  enabled: true
+teleport_kube_agent:
+  enabled: false
+  proxyAddr: teleport.domino.tech:443
+  authToken: eeceeV4sohh8eew0Oa1aexoTahm3Eiha
+image_building:
+  verbose: false
+  rootless: false
+  concurrency: 10
+  cache_storage_size: 500Gi
+  cache_storage_retention: 375000000000
+  builder_node_selector: {}
+  registries: null
+image_caching:
+  enabled: true
+vault:
+  enabled: true
+workbench:
+  enabled: true
+modelmonitor:
+  enabled: true
+
+services:
+  nginx_ingress:
+    chart_values:
+      controller:
+        kind: Deployment
+        hostNetwork: false
+        config:
+          use-proxy-protocol: 'true'
+        service:
+          enabled: true
+          type: LoadBalancer
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: ''
+            service.beta.kubernetes.io/aws-load-balancer-internal: 'false'
+            service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+            service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
+            service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
+            service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:acm:us-east-1:400825810227:certificate/b77dc919-22ce-4882-93a9-645fec2cbb6c'
+            service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
+          targetPorts:
+            http: http
+            https: http
