@@ -42,7 +42,7 @@ ingress_controller:
 storage_classes:
   block:
     create: true
-    name: dominodisk
+    name: trident-csi
     type: ebs
     access_modes:
     - ReadWriteOnce
@@ -51,7 +51,7 @@ storage_classes:
     parameters: {}
   shared:
     create: true
-    name: dominoshared
+    name: trident-csi
     type: nfs
     access_modes:
     - ReadWriteMany
