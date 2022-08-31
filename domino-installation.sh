@@ -11,7 +11,7 @@ kubectl create secret \
 kubectl create configmap \
   fleetcommand-agent-config \
   -o yaml --dry-run \
-  --from-file=domino-new.yml | kubectl apply -f -
+  --from-file=domino.yml | kubectl apply -f -
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ServiceAccount
