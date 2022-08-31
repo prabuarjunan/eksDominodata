@@ -57,5 +57,6 @@ set +e
 while true; do
   sleep 5
   if kubectl logs -f fleetcommand-agent-install; then
-break fi
+    break
+  fi
 done
