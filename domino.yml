@@ -41,7 +41,7 @@ ingress_controller:
   class_name: nginx
 storage_classes:
   block:
-    create: true
+    create: false
     name: trident-csi
     type: ebs
     access_modes:
@@ -50,7 +50,7 @@ storage_classes:
     default: false
     parameters: {}
   shared:
-    create: true
+    create: false
     name: trident-csi
     type: nfs
     access_modes:
