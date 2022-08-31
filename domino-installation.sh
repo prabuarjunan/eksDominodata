@@ -43,7 +43,7 @@ spec:
   containers:
   - name: fleetcommand-agent
     image: quay.io/domino/fleetcommand-agent:v56
-    args: ["run", "-f", "/app/install/domino-new.yml", "-v"]
+    args: ["run", "-f", "/app/install/domino.yml", "-v"]
     imagePullPolicy: Always
     volumeMounts:
     - name: install-config
