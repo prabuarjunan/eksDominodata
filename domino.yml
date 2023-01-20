@@ -186,7 +186,7 @@ helm:
 private_docker_registry:
   server: quay.io
   username: 'domino+netapp_fsx'
-  password: 'DC675XRVV3RRK5D71LFCAD83E25T3ZXX16OCASH70MH604N2NCES0A85IS88R9QF'
+  password: #your password
 internal_docker_registry:
   enabled: true
   s3_override:
@@ -222,7 +222,7 @@ certificate_management:
 teleport_kube_agent:
   enabled: false
   proxyAddr: teleport.domino.tech:443
-  authToken: eeceeV4sohh8eew0Oa1aexoTahm3Eiha
+  authToken: #your auth token
 image_building:
   verbose: false
   rootless: false
