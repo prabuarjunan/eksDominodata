@@ -6,7 +6,7 @@ kubectl create secret \
   -o yaml --dry-run \
   --docker-server=quay.io \
   --docker-username="domino+netapp_fsx" \
-  --docker-password="DC675XRVV3RRK5D71LFCAD83E25T3ZXX16OCASH70MH604N2NCES0A85IS88R9QF" \
+  --docker-password=#your passowrd
   --docker-email=. domino-quay-repos | kubectl apply -f -
 kubectl create configmap \
   fleetcommand-agent-config \
